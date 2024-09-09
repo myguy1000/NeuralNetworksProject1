@@ -1,29 +1,17 @@
 import numpy as np
-import pandas as pd
 
 class Perceptron:
-    def __init__(self, num_samples, num_features, threshold=0):
+    def __init__(self, input_size, threshold=0):
         # Initialize weights and bias to random numbers in the range of [-1, 1]
-        self.num_samples = num_samples
-        self.num_features = num_features
-        self.weights = np.random.uniform(-1, 1, (num_samples, num_features))
+        self.weights = np.random.uniform(-1, 1, input_size)
         self.bias = np.random.uniform(-1, 1)
         self.threshold = threshold
-        self.predictions = None
-
-# To-do:
-# finish forward (Equivalent to predict)
-# look at Wayne's fit function again to see what to do about it. if i can build on it.
-
 
     def forward(self, X_train):
         # Compute the prediction for the class of each input of the perceptron
-        #for i in self.num_features:
-
-
-        curFeature = 0
+        curItem=0
         total = 0
-        for i in self.num_features:
+        for i in inputs:
             total = total + (i * self.weights[curItem])
             curItem += 1
 
@@ -51,27 +39,47 @@ class Perceptron:
 # iterate through the three test cases
 # count: iteration variable; used to switch between test cases
 count = 0
-for i in range(1): # change to 3 when cases 2 and 3 are complete
+for i in range(2): # change to 3 when cases 2 and 3 are complete
+    print("beginning of case ", count + 1)
+
     # 200 samples, two or four features (x1, x2, x3, x4) each with range 1 -> 10
-    samples1_x1 = np.random.uniform(1, 10, 200)
+    #samples1_x1 = np.random.uniform(1, 10, 200) 
+    samples1_x1 = [None] * 200
     samples1_x2 = [None] * 200
     samples2_x1 = [None] * 200
-    samples2_x2 = np.random.uniform(1, 10, 200)
-
+    samples2_x2 = [None] * 200 #np.random.uniform(1, 10, 200)
+    
     for i in range(200):
 
+        #case 1
         if count==0:
+            samples1_x1 = np.random.uniform(1, 10, 200)
+            samples2_x2 = np.random.uniform(1, 10, 200)
+
             min_s1x2=samples1_x1[i]
             max_s1x2=10
             min_s2x1=samples2_x2[i]
             max_s2x1=10
             num_classes=2
-        #elif count == 1:
-        #    min_x1=
-        #    max_x1=samples1_x1[i]
-        #    min_x2=-1
-        #    max_x2=samples2_x2[i]
-        #    num_classes = 2
+           
+
+            samples1_x2[i] = np.random.uniform(min_s1x2, max_s1x2, 1) 
+            samples2_x1[i] = np.random.uniform(min_s2x1, max_s2x1, 1) 
+        
+        #case 2
+        elif count == 1:
+            samples1_x2 = np.random.uniform(2.5, 7.5, 200)
+            samples2_x2 = np.random.uniform(2.5, 7.5, 200)
+            
+            min_s1x1=2*samples1_x2[i]-5
+            max_s1x1=7.5
+            min_s2x1=2.5
+            max_s2x1=2*samples2_x2[i]-5
+            num_classes=2
+        
+            samples1_x1[i] = np.random.uniform(min_s1x1, max_s1x1, 1) 
+            samples2_x1[i] = np.random.uniform(min_s2x1, max_s2x1, 1) 
+
         #else: # count == 2
         #    min1=samples1_x1[i]
         #    max1=2
@@ -79,8 +87,6 @@ for i in range(1): # change to 3 when cases 2 and 3 are complete
         #    max2=
         #    num_classes = 4
 
-        samples1_x2[i] = np.random.uniform(min_s1x2, max_s1x2, 1) 
-        samples2_x1[i] = np.random.uniform(min_s2x1, max_s2x1, 1) 
 
     samples1 = np.append(samples1_x1, samples2_x1)
     samples2 = np.append(samples1_x2, samples2_x2)
@@ -111,6 +117,7 @@ for i in range(1): # change to 3 when cases 2 and 3 are complete
 
     # end of this test, so increment for the next test
     count += 1
+    print("")
 
 #perceptron.forward(
 
