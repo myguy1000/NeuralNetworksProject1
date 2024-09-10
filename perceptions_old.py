@@ -2,10 +2,10 @@ import numpy as np
 
 
 class Perceptron:
-    def __init__(self, input_size, threshold):
+    def __init__(self, input_size, min, max, threshold):
         # Initialize weights and bias to random numbers in the range of [-1, 1]
-        self.weights = np.random.uniform(-1, 1, input_size)
-        self.bias = np.random.uniform(-1, 1)
+        self.weights = np.random.uniform(min, max, input_size)
+        self.bias = np.random.uniform(min, max)
         self.threshold = threshold
 
     def forward(self, inputs):
