@@ -34,3 +34,19 @@ class Perceptron:
                 self.weights += learning_rate * (curOutput - prediction) * x
                 self.bias += learning_rate * (curOutput - prediction)
                 curInput += 1
+
+    def fit_GD(self, inputs, output, learning_rate, num_epochs):
+        # Train the perceptron using gradient decent
+        z = range(num_epochs)
+        # epoch
+        for i in z:
+            curInput = 0
+            # step
+            for x in inputs:
+                curOutput = output[curInput]
+                prediction = self.forward(x)
+                loss = 0.5 * (curOutput - prediction) ** 2
+                # gradient decent
+                self.weights -= learning_rate * loss
+                self.bias -= learning_rate * loss
+                curInput += 1
