@@ -154,5 +154,3 @@ for i in range(2): # change to 3 when cases 2 and 3 are complete
 #        y_actual[i] = 1
 #    else:
 #        y_actual[i] = 0
-
-

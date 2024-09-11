@@ -35,20 +35,36 @@ class Perceptron:
                 self.bias += learning_rate * (curOutput - prediction)
                 curInput += 1
 
-
     def fit_GD(self, inputs, output, learning_rate, num_epochs):
-        # Train the perceptron using gradient decent
-        z = range(num_epochs)
-        # epoch
-        for i in z:
-            inputIndex = 0
-            # step
-            for x in inputs:
-                correctOutput = output[inputIndex]
+        """
+        Trains the perceptron using the gradient descent algorithm with Mean Squared Error (MSE) as the loss function.
+        The weights and bias are updated by calculating the partial derivatives (gradients) from the accumulated
+        loss over all samples.
+        """
+        for epoch in range(num_epochs):
+            total_loss = 0
+            gradient_w = np.zeros_like(self.weights)
+            gradient_b = 0
+
+            for i, x in enumerate(inputs):
+                y_true = output[i]
+
+                # Use the existing forward method
                 prediction = self.forward(x)
-                loss = 0.5 * (correctOutput - prediction) ** 2
-                # gradient decent
-                self.weights[0] += (learning_rate * loss * x[0])
-                self.weights[1] += (learning_rate * loss * x[1])
-                self.bias += learning_rate * loss
-                inputIndex += 1
+
+                # Calculate the loss using Mean Squared Error (MSE)
+                loss = 0.5 * (y_true - prediction) ** 2
+                total_loss += loss
+
+                # Calculate gradients
+                error = y_true - prediction
+                gradient_w += -error * x
+                gradient_b += -error
+
+            # Update weights and bias
+            self.weights -= learning_rate * gradient_w / len(inputs)
+            self.bias -= learning_rate * gradient_b / len(inputs)
+
+            # Print the average loss for this epoch
+            print(f"Epoch {epoch+1}/{num_epochs}, Loss: {total_loss / len(inputs)}")
+

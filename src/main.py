@@ -137,6 +137,8 @@ X_test_2, y_test_2 = case2Samples()
 misclassified_2 = incorrectlyClassified(perceptron_2, X_test_2, y_test_2)
 print(f"Case 2: Misclassified samples = {misclassified_2}")
 
+
+
 # Plot decision boundary for Case 2
 #plot_decision_boundary(perceptron_2, X_train_2, y_train_2, title='Case 2: Decision Boundary')
 
