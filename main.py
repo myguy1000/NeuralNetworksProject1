@@ -110,6 +110,8 @@ def makeCurrentPlot(perceptron, xValues, yValues, title):
     plt.grid(True)
     plt.show()
 
+# Perceptron Learning
+print("Perceptron Learning")
 # Case 1
 X_train_1, y_train_1 = case1Samples()
 perceptron_1 = Perceptron(2,-1,1,THRESHOLD)
@@ -137,3 +139,24 @@ print(f"Case 2: Misclassified samples = {misclassified_2}")
 
 # Plot decision boundary for Case 2
 #plot_decision_boundary(perceptron_2, X_train_2, y_train_2, title='Case 2: Decision Boundary')
+
+
+# Gradient Decent
+print("Gradient Decent")
+
+# Case 1
+
+X_train_3, y_train_3 = case1Samples()
+perceptron_1 = Perceptron(2,-1,1,THRESHOLD)
+perceptron_1.fit_GD(X_train_1, y_train_1, LEARNING_RATE, NUM_EPOCHS)
+
+# Generate test data for Case 1
+X_test_1, y_test_1 = case1Samples()
+misclassified_1 = incorrectlyClassified(perceptron_1, X_test_1, y_test_1)
+print(f"Case 1: Misclassified samples = {misclassified_1}")
+
+# Plot decision boundary for Case 1
+makeCurrentPlot(perceptron_1, X_train_1, y_train_1, title='Case 1: Decision Boundary')
+
+
+# Case 3
