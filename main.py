@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from perceptions_old import Perceptron  # Ensure the class is saved as perceptron.py
+from perceptions_old import Perceptron  # Ensure the class is saved as current_perceptron.py
 
-THRESHOLD = 0.5
+THRESHOLD = 0
 LEARNING_RATE = 0.1
-NUM_EPOCHS = 10
-NUMSAMPLES = 100
+NUM_EPOCHS = 2
+NUMSAMPLES = 10
 MINSAMPLESPACE = -100
 MAXSAMPLESPACE = 100
 
@@ -74,7 +74,7 @@ def incorrectlyClassified(perceptron, xInputs, yInputs):
             incorrect = incorrect + 0
     return incorrect
 
-def makeCurrentPlot(perceptron, xValues, yValues, title):
+def makeCurrentPlot(current_perceptron, xValues, yValues, title):
     # Plot the data points
     class_1 = xValues[yValues == 1]
     class_2 = xValues[yValues == 0]
@@ -92,22 +92,23 @@ def makeCurrentPlot(perceptron, xValues, yValues, title):
     for i in class_2:
         graphY2.append(i[1])
 
-    plt.scatter(graphX, graphY, color='b', label='Class 1')
-    plt.scatter(graphX2, graphY2, color='r', label='Class 2')
+    plt.scatter(graphX, graphY, color='black', label='Class 1')
+    plt.scatter(graphX2, graphY2, color='green', label='Class 2')
 
     # Plot the decision boundary: w1*x1 + w2*x2 + bias = 0 => x2 = -(w1/w2)*x1 - (bias/w2)
     x_values = np.linspace(MINSAMPLESPACE, MAXSAMPLESPACE, 100)
-    w1, w2 = perceptron.weights
-    bias = perceptron.bias
+    w1, w2 = current_perceptron.weights
+    bias = current_perceptron.getBias()
     y_values = -(w1/w2) * x_values - (bias/w2)
-    plt.plot(x_values, y_values, 'g--', label='Decision Boundary')
+    plt.plot(x_values, y_values, 'b--', label='Our Separation Hyperplane')
 
-    # Plot details
+    #Labeling our plot and setting the tile
     plt.title(title)
-    plt.xlabel('x1')
-    plt.ylabel('x2')
+    plt.xlabel('X values')
+    plt.ylabel('Y values')
     plt.legend()
-    plt.grid(True)
+
+
     plt.show()
 
 # Case 1
@@ -118,7 +119,7 @@ perceptron_1.fit(X_train_1, y_train_1, LEARNING_RATE, NUM_EPOCHS)
 # Generate test data for Case 1
 X_test_1, y_test_1 = case1Samples()
 misclassified_1 = incorrectlyClassified(perceptron_1, X_test_1, y_test_1)
-print(f"Case 1: Misclassified samples = {misclassified_1}")
+print("The number of samples that have been misclassified for case #1 is: " + str(misclassified_1))
 
 
 # Plot decision boundary for Case 1
@@ -133,7 +134,7 @@ makeCurrentPlot(perceptron_2, X_train_2, y_train_2, title='Case 2: Decision Boun
 # Generate test data for Case 2
 X_test_2, y_test_2 = case2Samples()
 misclassified_2 = incorrectlyClassified(perceptron_2, X_test_2, y_test_2)
-print(f"Case 2: Misclassified samples = {misclassified_2}")
+print("The number of samples that have been misclassified for case #1 is: " + str(misclassified_2))
 
 # Plot decision boundary for Case 2
 #plot_decision_boundary(perceptron_2, X_train_2, y_train_2, title='Case 2: Decision Boundary')

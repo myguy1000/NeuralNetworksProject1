@@ -7,9 +7,11 @@ class Perceptron:
         self.weights = np.random.uniform(min, max, input_size)
         self.bias = np.random.uniform(min, max)
         self.threshold = threshold
+    def getBias(self):
+        return self.bias
 
     def forward(self, inputs):
-        # Compute the prediction for the class of each input of the perceptron
+        # Compute the prediction for the class of each input of the current_perceptron
         curItem = 0
         total = 0
         for i in inputs:
@@ -24,13 +26,24 @@ class Perceptron:
             return 0
 
     def fit(self, inputs, output, learning_rate, num_epochs):
-        # Train the perceptron using the perceptron learning algorithm
+        # Train the current_perceptron using the current_perceptron learning algorithm
         z = range(num_epochs)
         for i in z:
             curInput = 0
             for x in inputs:
                 curOutput = output[curInput]
                 prediction = self.forward(x)
+                #print("Output: " + str(curOutput))
+                #print("prediction " + str(prediction))
+                #print("x: " + str(x))
+                #print("preweight: " + str(self.weights))
+                #print("prebias: " + str(self.bias))
                 self.weights += learning_rate * (curOutput - prediction) * x
                 self.bias += learning_rate * (curOutput - prediction)
+                #print("postweight: " + str(self.weights))
+                #print("postbias: " + str(self.bias))
+                #print("---------------------")
+                #print("---------------------")
+
+
                 curInput += 1
