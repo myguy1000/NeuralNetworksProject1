@@ -130,44 +130,101 @@ def makeCurrentPlot(perceptron, xValues, yValues, title):
 # Case 1
 X_train_1, y_train_1 = caseSamples(1)
 perceptron_1 = Perceptron(2,-1,1,THRESHOLD)
-perceptron_1.fit(X_train_1, y_train_1, LEARNING_RATE, NUM_EPOCHS)
 
+
+# reg-fit
+
+#train
+perceptron_1.fit(X_train_1, y_train_1, LEARNING_RATE, NUM_EPOCHS)
+misclassified_1 = incorrectlyClassified(perceptron_1, X_train_1, y_train_1)
+print(f"Case 1a: Misclassified samples reg-fit (train) = {misclassified_1}")
+
+# Plot decision boundary for Case 1
+makeCurrentPlot(perceptron_1, X_train_1, y_train_1, 'Case 1: Decision Boundary Regular Fit Fxn (train)')
+
+#test
 # Generate test data for Case 1
 X_test_1, y_test_1 = caseSamples(1)
 misclassified_1 = incorrectlyClassified(perceptron_1, X_test_1, y_test_1)
-print(f"Case 1: Misclassified samples = {misclassified_1}")
-
+print(f"Case 1b: Misclassified samples reg-fit (test) = {misclassified_1}")
 
 # Plot decision boundary for Case 1
-makeCurrentPlot(perceptron_1, X_train_1, y_train_1, 'Case 1: Decision Boundary')
+makeCurrentPlot(perceptron_1, X_train_1, y_train_1, 'Case 1: Decision Boundary Regular Fit Fxn (test)')
 
+
+# GD-fit
+
+
+#train
+perceptron_1.fit_GD(X_train_1, y_train_1, LEARNING_RATE, NUM_EPOCHS)
+misclassified_1 = incorrectlyClassified(perceptron_1, X_train_1, y_train_1)
+print(f"Case 1c: Misclassified samples GD-Fit (train) = {misclassified_1}")
+
+# Plot decision boundary for Case 1
+makeCurrentPlot(perceptron_1, X_train_1, y_train_1, 'Case 1: Decision Boundary GD Fit Fxn (train)')
+
+
+#test
+# Generate test data for Case 1
+misclassified_1 = incorrectlyClassified(perceptron_1, X_test_1, y_test_1)
+print(f"Case 1d: Misclassified samples GD-fit (test) = {misclassified_1}")
+
+# Plot decision boundary for Case 1
+makeCurrentPlot(perceptron_1, X_test_1, y_test_1, 'Case 1: Decision Boundary GD Fit Fxn (test)')
+
+
+print("")
 # Case 2
 X_train_2, y_train_2 = caseSamples(2)
 perceptron_2 = Perceptron(2,-1,1,THRESHOLD)
 #plot_decision_boundary(perceptron_2, X_train_2, y_train_2, title='Pre Boundry')
+
+#train
 perceptron_2.fit(X_train_2, y_train_2, LEARNING_RATE, NUM_EPOCHS)
-makeCurrentPlot(perceptron_2, X_train_2, y_train_2, 'Case 2: Decision Boundary')
+makeCurrentPlot(perceptron_2, X_train_2, y_train_2, 'Case 2: Decision Boundary Reg Fit Fxn (train)')
+misclassified_2 = incorrectlyClassified(perceptron_2, X_train_2, y_train_2)
+print(f"Case 2a: Misclassified samples reg-fit (train) = {misclassified_2}")
+
+#test
 # Generate test data for Case 2
 X_test_2, y_test_2 = caseSamples(2)
 misclassified_2 = incorrectlyClassified(perceptron_2, X_test_2, y_test_2)
-print(f"Case 2: Misclassified samples = {misclassified_2}")
+print(f"Case 2b: Misclassified samples reg-fit (test) = {misclassified_2}")
+makeCurrentPlot(perceptron_2, X_test_2, y_test_2, 'Case 2: Decision Boundary Reg Fit Fxn (test)')
 
+
+print("")
 # Case 3
 
 X_train_3, y_train_3 = caseSamples(3)
 perceptron_3 = Perceptron(4,-1,1,THRESHOLD)
 
+
 # regular fit function
+
+
+#train
 perceptron_3.fit(X_train_3, y_train_3, LEARNING_RATE, NUM_EPOCHS)
 misclassified_3 = incorrectlyClassified(perceptron_3, X_train_3, y_train_3)
-print(f"Case 3: Misclassified samples (train) = {misclassified_3}")
+print(f"Case 3a: Misclassified samples reg-fit (train) = {misclassified_3}")
 
-# GD fit function
-perceptron_3.fit_GD(X_train_3, y_train_3, LEARNING_RATE, NUM_EPOCHS)
-misclassified_3 = incorrectlyClassified(perceptron_3, X_train_3, y_train_3)
-print(f"Case 3: Misclassified samples (train) = {misclassified_3}")
+#test
+X_test_3, y_test_3 = caseSamples(3)
 
 # Generate test data for Case 2
-X_test_3, y_test_3 = caseSamples(3)
 misclassified_3 = incorrectlyClassified(perceptron_3, X_test_3, y_test_3)
-print(f"Case 3: Misclassified samples (test) = {misclassified_3}")
+print(f"Case 3b: Misclassified samples reg-fit (test) = {misclassified_3}")
+
+
+# GD fit function
+
+
+#train
+perceptron_3.fit_GD(X_train_3, y_train_3, LEARNING_RATE, NUM_EPOCHS)
+misclassified_3 = incorrectlyClassified(perceptron_3, X_train_3, y_train_3)
+print(f"Case 3c: Misclassified samples GD-fit (train) = {misclassified_3}")
+
+#test
+# Generate test data for Case 2
+misclassified_3 = incorrectlyClassified(perceptron_3, X_test_3, y_test_3)
+print(f"Case 3d: Misclassified samples GD-fit (test) = {misclassified_3}")
