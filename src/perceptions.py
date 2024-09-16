@@ -1,15 +1,18 @@
 import numpy as np
-
 class Perceptron:
-    def __init__(self, input_size, threshold=0):
-        # Initialize weights and bias to random numbers in the range of [-1, 1]
-        self.weights = np.random.uniform(-1, 1, input_size)
-        self.bias = np.random.uniform(-1, 1)
+    def __init__(self, input_size, min, max, threshold):
+        #Sets the weights and bias to be in the range of -1 to 1.
+        #For our standard tests min = -1 and max = 1
+        self.weights = np.random.uniform(min, max, input_size)
+        self.bias = np.random.uniform(min, max)
+        #set threshold to be the threshold value passed in from main
         self.threshold = threshold
+    def getBias(self):
+        return self.bias
 
-    def forward(self, X_train):
-        # Compute the prediction for the class of each input of the perceptron
-        curItem=0
+    def forward(self, inputs):
+        # Compute the prediction for the class of each input of the current_perceptron
+        curItem = 0
         total = 0
         for i in inputs:
             total = total + (i * self.weights[curItem])
@@ -23,134 +26,59 @@ class Perceptron:
             return 0
 
     def fit(self, inputs, output, learning_rate, num_epochs):
-        # Train the perceptron using the perceptron learning algorithm
+        # Train the current_perceptron using the current_perceptron learning algorithm
         z = range(num_epochs)
         for i in z:
             curInput = 0
             for x in inputs:
                 curOutput = output[curInput]
                 prediction = self.forward(x)
+                #print("Output: " + str(curOutput))
+                #print("prediction " + str(prediction))
+                #print("x: " + str(x))
+                #print("preweight: " + str(self.weights))
+                #print("prebias: " + str(self.bias))
                 self.weights += learning_rate * (curOutput - prediction) * x
                 self.bias += learning_rate * (curOutput - prediction)
+                #print("postweight: " + str(self.weights))
+                #print("postbias: " + str(self.bias))
+                #print("---------------------")
+                #print("---------------------")
+
+
                 curInput += 1
 
-# testing
 
-# iterate through the three test cases
-# count: iteration variable; used to switch between test cases
-count = 0
-for i in range(2): # change to 3 when cases 2 and 3 are complete
-    print("beginning of case ", count + 1)
+    def fit_GD(self, inputs, output, learning_rate, num_epochs):
+        """
+        Trains the perceptron using the gradient descent algorithm with Mean Squared Error (MSE) as the loss function.
+        The weights and bias are updated by calculating the partial derivatives (gradients) from the accumulated
+        loss over all samples.
+        """
+        for epoch in range(num_epochs):
+            total_loss = 0
+            gradient_w = np.zeros_like(self.weights)
+            gradient_b = 0
 
-    # 200 samples, two or four features (x1, x2, x3, x4) each with range 1 -> 10
-    #samples1_x1 = np.random.uniform(1, 10, 200) 
-    samples1_x1 = [None] * 200
-    samples1_x2 = [None] * 200
-    samples2_x1 = [None] * 200
-    samples2_x2 = [None] * 200 #np.random.uniform(1, 10, 200)
-    
-    for i in range(200):
+            for i, x in enumerate(inputs):
+                y_true = output[i]
 
-        #case 1
-        if count==0:
-            samples1_x1 = np.random.uniform(1, 10, 200)
-            samples2_x2 = np.random.uniform(1, 10, 200)
+                # Use the existing forward method
+                prediction = self.forward(x)
 
-            min_s1x2=samples1_x1[i]
-            max_s1x2=10
-            min_s2x1=samples2_x2[i]
-            max_s2x1=10
-            num_classes=2
-           
+                # Calculate the loss using Mean Squared Error (MSE)
+                loss = 0.5 * (y_true - prediction) ** 2
+                total_loss += loss
 
-            samples1_x2[i] = np.random.uniform(min_s1x2, max_s1x2, 1) 
-            samples2_x1[i] = np.random.uniform(min_s2x1, max_s2x1, 1) 
-        
-        #case 2
-        elif count == 1:
-            samples1_x2 = np.random.uniform(2.5, 7.5, 200)
-            samples2_x2 = np.random.uniform(2.5, 7.5, 200)
-            
-            min_s1x1=2*samples1_x2[i]-5
-            max_s1x1=7.5
-            min_s2x1=2.5
-            max_s2x1=2*samples2_x2[i]-5
-            num_classes=2
-        
-            samples1_x1[i] = np.random.uniform(min_s1x1, max_s1x1, 1) 
-            samples2_x1[i] = np.random.uniform(min_s2x1, max_s2x1, 1) 
+                # Calculate gradients
+                error = y_true - prediction
+                gradient_w += -error * x
+                gradient_b += -error
 
-        #else: # count == 2
-        #    min1=samples1_x1[i]
-        #    max1=2
-        #    min2=samples2_x2[i]
-        #    max2=
-        #    num_classes = 4
+            # Update weights and bias
+            self.weights -= learning_rate * gradient_w / len(inputs)
+            self.bias -= learning_rate * gradient_b / len(inputs)
 
+            # Print the average loss for this epoch
+            print(f"Epoch {epoch+1}/{num_epochs}, Loss: {total_loss / len(inputs)}")
 
-    samples1 = np.append(samples1_x1, samples2_x1)
-    samples2 = np.append(samples1_x2, samples2_x2)
-
-    y0 = np.zeros(200)
-    y1 = y0 + 1
-    y_actual = np.append(y1, y0)
-
-    samples_and_y = np.column_stack((samples1, samples2, y_actual))
-    np.random.shuffle(samples_and_y)
-
-    # dividing up all samples into train and test
-    y_train_actual = samples_and_y[0:200,2]
-    y_test_actual = samples_and_y[200:400,2]
-    X_train = samples_and_y[0:200,[0,1]]
-    X_test = samples_and_y[200:400,[0,1]]
-    print("combined x and y: ", samples_and_y)
-    
-    print("X_train shape: ", X_train.shape)
-    print("X_test shape: ", X_test.shape)
-    print("y_train_actual shape: ", y_train_actual.shape)
-    print("y_test_actual shape: ", y_test_actual.shape)
-    #print(X_train)
-    #print(y_train)
-    
-    # testing
-    perceptron = Perceptron(100, 2)
-
-    # end of this test, so increment for the next test
-    count += 1
-    print("")
-
-#perceptron.forward(
-
-# compare predicted with actual y values
-#misclassifications = 0
-#for i in range(200):
-#    if y_actual == perceptron.predictions:
-#        misclassifications += 1
-#print(misclassifications)
-
-
-#for i in range(samples_x2):
-#
-#y_actual = np.zeros(100)
-#
-## generate the actual y values (class identifier, either 0 or 1) for each sample
-#y_actual = np.zeros(100)
-#for i in range(100):
-#    if -samples[i, 0] + samples[i,1] >= 0:
-#        y_actual[i] = 1
-#    else:
-#        y_actual[i] = 0
-#
-## generate predictions
-#
-##case 2
-#samples = np.random.uniform(-1, 1, 100) # 100 samples, 2 features (x1, x2) each with range -1 -> 1
-#samples = 
-#
-## generate the actual y values (class identifier, either 0 or 1) for each sample
-#y_actual = np.zeros(100)
-#for i in range(100):
-#    if samples[i, 0] - 2 * samples[i, 1] + 5 >= 0:
-#        y_actual[i] = 1
-#    else:
-#        y_actual[i] = 0
