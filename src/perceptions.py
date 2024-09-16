@@ -80,5 +80,5 @@ class Perceptron:
             self.bias -= learning_rate * gradient_b / len(inputs)
 
             # Print the average loss for this epoch
-            print(f"Epoch {epoch+1}/{num_epochs}, Loss: {total_loss / len(inputs)}")
+            #print(f"Epoch {epoch+1}/{num_epochs}, Loss: {total_loss / len(inputs)}")
 
