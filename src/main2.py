@@ -3,10 +3,15 @@ import matplotlib.pyplot as plt
 from perceptions import Perceptron  # Ensure the class is saved as perceptron.py
 
 THRESHOLD = 0.5
+#the magnitude at which the models weights are updated during a single increment
+#lower learning rate may lead to a more accurate result but longer to reach that result
 LEARNING_RATE = 0.1
+#how many times the dataset will be passed through the model
 NUM_EPOCHS = 10
 NUMSAMPLES = 100
+#min value a sample can take
 MINSAMPLESPACE = -100
+#max value a sample can take
 MAXSAMPLESPACE = 100
 
 # Function: caseSamples
