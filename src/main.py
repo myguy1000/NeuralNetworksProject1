@@ -49,8 +49,6 @@ def case1Samples():
     for i in range(NUMSAMPLES):
         trainingDataX.append(case1Class1[i])
         trainingDataX.append(case1Class2[i])
-    # for i in range(NUMSAMPLES):
-    # print(trainingDataX[i])
     trainingDataY = []
     for i in range(len(trainingDataX)):
         if (-1 * trainingDataX[i][0]) + trainingDataX[i][1] > 0:
@@ -96,8 +94,6 @@ def case2Samples():
     for i in range(NUMSAMPLES):
         trainingDataX.append(case2Class1[i])
         trainingDataX.append(case2Class2[i])
-    # for i in range(NUMSAMPLES):
-    # print(trainingDataX[i])
     trainingDataY = []
     for i in range(len(trainingDataX)):
         if (trainingDataX[i][0] - (2 * trainingDataX[i][1]) + 5) > 0:
@@ -120,7 +116,6 @@ def case3Samples():
 
     # Initialize empty lists to store valid samples for class 1 and class 2
     class1_samples = []
-    count = 0
     # Generate samples for class 1 until we have exactly 100 valid samples
     while len(class1_samples) < 100:
         # Generate random values for X1, X2, X3, X4
@@ -130,11 +125,9 @@ def case3Samples():
         X4 = np.random.uniform(-10, 10)
         
         # Check if the sample satisfies the condition for class 1
-        count += 1
         if 0.5 * X1 - X2 - 10 * X3 + X4 + 50 > 0:
             class1_samples.append([X1, X2, X3, X4])
 
-   # Convert class1_samples to a NumPy array
     class1_samples = np.array(class1_samples)
 
     # Now generate 100 samples for class 2 where 0.5*X1 - X2 - 10*X3 + X4 + 50 < 0
@@ -151,22 +144,21 @@ def case3Samples():
         if 0.5 * X1 - X2 - 10 * X3 + X4 + 50 < 0:
             class2_samples.append([X1, X2, X3, X4])
 
-    # Convert class2_samples to a NumPy array
     class2_samples = np.array(class2_samples)
 
+    # Perform data maniipulation to combine the samples from the two classes, shuffle them, and return them.
+    
     # Combine both classes
     X = np.vstack((class1_samples, class2_samples))
 
     # Create labels for the classes (1 for class 1, 0 for class 2)
     y = np.concatenate([np.ones(100), np.zeros(100)])
 
-    # Combine X and y into a single array where y is appended as the last column of X
+    # Combine X and y and shuffle, then split back into X and y
     combined = np.hstack((X, y.reshape(-1, 1)))
 
-    # Shuffle the combined array along the rows
     np.random.shuffle(combined)
 
-    # Split the combined array back into X and y
     X_shuffled = combined[:, :-1] # All columns except the laast one are X
     y_shuffled = combined[:, -1] # The last column is y
 
@@ -282,13 +274,15 @@ perceptron_3 = Perceptron(4,-1,1,THRESHOLD)
 
 #train
 perceptron_3.fit(X_train_3, y_train_3, LEARNING_RATE, NUM_EPOCHS)
+
+# Determine count of misclassified samples
 misclassified_3 = incorrectlyClassified(perceptron_3, X_train_3, y_train_3)
 print(f"Case 3a: Misclassified samples reg-fit (train) = {misclassified_3}")
 
 #test
 X_test_3, y_test_3 = case3Samples()
 
-# Generate test data for Case 2
+# Determine count of misclassified samples
 misclassified_3 = incorrectlyClassified(perceptron_3, X_test_3, y_test_3)
 print(f"Case 3b: Misclassified samples reg-fit (test) = {misclassified_3}")
 
@@ -298,10 +292,12 @@ print(f"Case 3b: Misclassified samples reg-fit (test) = {misclassified_3}")
 
 #train
 perceptron_3.fit_GD(X_train_3, y_train_3, LEARNING_RATE, NUM_EPOCHS)
+
+# Determine count of misclassified samples
 misclassified_3 = incorrectlyClassified(perceptron_3, X_train_3, y_train_3)
 print(f"Case 3c: Misclassified samples GD-fit (train) = {misclassified_3}")
 
 #test
-# Generate test data for Case 2
+# Determine count of misclassified samples
 misclassified_3 = incorrectlyClassified(perceptron_3, X_test_3, y_test_3)
 print(f"Case 3d: Misclassified samples GD-fit (test) = {misclassified_3}")
