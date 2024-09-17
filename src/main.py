@@ -106,6 +106,52 @@ def case2Samples():
     return trainingDataX, trainingDataY
 
 """
+case3Samples generates the sample data to be used by the perception class
+Generates 100 samples in Class 1: {(x1, x2, x3, x4) | 0.5x1 − x2 − 10x3 + x4 + 50 > 0}
+and 100 samples in Class 2: {(x1, x2, x3, x4) | 0.5x1 − x2 − 10x3 + x4 + 50 < 0}
+Returns two numpy arrays, for x and y
+"""
+def case3Samples():
+    case3Class1 = []
+    for i in range(NUMSAMPLES):
+        correct = 0
+        while correct == 0:
+            test = np.random.uniform(MINSAMPLESPACE, MAXSAMPLESPACE, 4)
+
+            if (0.5 * test[0]) - test[1] - (10 * test[2]) + test[3] + 50 > 0:
+                case3Class1.append(test)
+                correct = 1
+            else:
+                correct = 0
+        # print(test)
+    case3Class2 = []
+    for i in range(NUMSAMPLES):
+        correct = 0
+        while correct == 0:
+            test = np.random.uniform(MINSAMPLESPACE, MAXSAMPLESPACE, 4)
+            if (0.5 * test[0]) - test[1] - (10 * test[2]) + test[3] + 50 < 0:
+                case3Class2.append(test)
+                correct = 1
+            else:
+                correct = 0
+    trainingDataX = []
+    for i in range(NUMSAMPLES):
+        trainingDataX.append(case3Class1[i])
+        trainingDataX.append(case3Class2[i])
+    # for i in range(NUMSAMPLES):
+    # print(trainingDataX[i])
+    trainingDataY = []
+    for i in range(len(trainingDataX)):
+        if (0.5 * trainingDataX[i][0]) - trainingDataX[i][1] - (10 * trainingDataX[i][2]) + trainingDataX[i][3] + 50 > 0:
+            trainingDataY.append(1)
+        else:
+            trainingDataY.append(0)
+
+    trainingDataX = np.array(trainingDataX)
+    trainingDataY = np.array(trainingDataY)
+
+    return trainingDataX, trainingDataY
+"""
 incorrectlyClassified examines each data point and determines if it is correctly classified into the correct class
 returns an integer number that is the number of data points/samples that have been misclassified
 """
