@@ -1,4 +1,11 @@
 import numpy as np
+
+"""
+Initialization for perceptron objects
+Able to decide the size of inputs, the min and max for the bias and weights, as well as the threshold.
+Changing these values
+can greatly change the learning of the perceptron
+"""
 class Perceptron:
     def __init__(self, input_size, min, max, threshold):
         #Sets the weights and bias to be in the range of -1 to 1.
@@ -7,9 +14,17 @@ class Perceptron:
         self.bias = np.random.uniform(min, max)
         #set threshold to be the threshold value passed in from main
         self.threshold = threshold
+
+    """
+    getBias returns the bias value for the perceptron
+    """
     def getBias(self):
         return self.bias
-
+    """
+    The forward method computes the weighted sum of inputs, adds the bias, and 
+    compares it to the threshold to make a prediction the output is 1 if it is greater, otherwise it returns a zero
+    used in the fit function
+    """
     def forward(self, inputs):
         # Compute the prediction for the class of each input of the current_perceptron
         curItem = 0
@@ -25,6 +40,11 @@ class Perceptron:
         else:
             return 0
 
+    """
+    fit is the perceptron learning function
+    fit re-adjusts the weights and bias for the perceptron when it is trying to better fit the data
+    if (curOutput-prediction) > 0 then the bias and weights change, if they are the same the the w and b don't change
+    """
     def fit(self, inputs, output, learning_rate, num_epochs):
         # Train the current_perceptron using the current_perceptron learning algorithm
         z = range(num_epochs)
@@ -33,17 +53,10 @@ class Perceptron:
             for x in inputs:
                 curOutput = output[curInput]
                 prediction = self.forward(x)
-                #print("Output: " + str(curOutput))
-                #print("prediction " + str(prediction))
-                #print("x: " + str(x))
-                #print("preweight: " + str(self.weights))
-                #print("prebias: " + str(self.bias))
+
                 self.weights += learning_rate * (curOutput - prediction) * x
                 self.bias += learning_rate * (curOutput - prediction)
-                #print("postweight: " + str(self.weights))
-                #print("postbias: " + str(self.bias))
-                #print("---------------------")
-                #print("---------------------")
+
 
 
                 curInput += 1

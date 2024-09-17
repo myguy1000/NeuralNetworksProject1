@@ -4,12 +4,18 @@ from perceptions import Perceptron  # Ensure the class is saved as current_perce
 
 THRESHOLD = 0
 LEARNING_RATE = 0.1
-NUM_EPOCHS = 5
-NUMSAMPLES = 5
+NUM_EPOCHS = 50
+NUMSAMPLES = 100
 MINSAMPLESPACE = -100
 MAXSAMPLESPACE = 100
 
 
+"""
+case1Samples generates the sample data to be used by the perception class
+Generates  100 samples in Class 1: {(x1, x2) | −x1 + x2 > 0} 
+and 100 samples in Class 2: {(x1, x2) | − x1 + x2 < 0}
+Returns two numpy arrays, for x and y
+"""
 def case1Samples():
     case1Class1 = []
     for i in range(NUMSAMPLES):
@@ -51,6 +57,13 @@ def case1Samples():
     trainingDataY = np.array(trainingDataY)
     return trainingDataX, trainingDataY
 
+
+"""
+case2Samples generates the sample data to be used by the perception class
+Generates 100 samples in Class 1: {(x1, x2) | x1 −
+2x2 + 5 > 0} and 100 samples in Class 2: {(x1, x2) | x1 − 2x2 + 5 < 0}
+Returns two numpy arrays, for x and y
+"""
 def case2Samples():
     case2Class1 = []
     for i in range(NUMSAMPLES):
@@ -92,6 +105,10 @@ def case2Samples():
 
     return trainingDataX, trainingDataY
 
+"""
+incorrectlyClassified examines each data point and determines if it is correctly classified into the correct class
+returns an integer number that is the number of data points/samples that have been misclassified
+"""
 def incorrectlyClassified(perceptron, xInputs, yInputs):
     incorrect = 0
     for i in range(len(xInputs)):
@@ -103,6 +120,12 @@ def incorrectlyClassified(perceptron, xInputs, yInputs):
             incorrect = incorrect + 0
     return incorrect
 
+
+"""
+Uses matplot lib to make a plot that shows the data points (colored) and the separation hyperplane
+plots in 2d, examining x1 vs x2 in our case.
+Key provided to show which class the data is in
+"""
 def makeCurrentPlot(current_perceptron, xValues, yValues, title):
     # Plot the data points
     class_1 = xValues[yValues == 1]
@@ -124,7 +147,6 @@ def makeCurrentPlot(current_perceptron, xValues, yValues, title):
     plt.scatter(graphX, graphY, color='black', label='Class 1')
     plt.scatter(graphX2, graphY2, color='green', label='Class 2')
 
-    # Plot the decision boundary: w1*x1 + w2*x2 + bias = 0 => x2 = -(w1/w2)*x1 - (bias/w2)
     #samplevalues for number of x data points, should be the same as number of y values
     samplevalues = 100
     x_values = np.linspace(MINSAMPLESPACE, MAXSAMPLESPACE, samplevalues)
